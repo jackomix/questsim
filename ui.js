@@ -6,10 +6,10 @@ function updateParty(statsObject) {
     // Iterate through party members list
     for (const [key, partyMember] of Object.entries(statsObject.partyMembers)) {
         // When adding the names, replace spaces with underscores, since we'll be comparing with the IDs
-        currentPartyNames.push(partyMember.name.replace(" ", "_"))
+        currentPartyNames.push(partyMember.name.replaceAll(" ", "_"))
 
         // (Try to) get the listing of the party member
-        var partyMemberListing = $(".party").querySelector(`#${partyMember.name}`.replace(" ", "_"))
+        var partyMemberListing = $(".party").querySelector(`#${partyMember.name}`.replaceAll(" ", "_"))
         if (partyMemberListing) {
             // If party member is already listed, update them
 
@@ -21,9 +21,9 @@ function updateParty(statsObject) {
             var currentPartyMemberBarNames = []
 
             for (const [key, bar] of Object.entries(partyMember.bars)) {
-                currentPartyMemberBarNames.push(bar.name.replace(" ", "_"))
+                currentPartyMemberBarNames.push(bar.name.replaceAll(" ", "_"))
 
-                var barListing = partyMemberListing.querySelector(`#${bar.name}`.replace(" ", "_"))
+                var barListing = partyMemberListing.querySelector(`#${bar.name}`.replaceAll(" ", "_"))
 
                 if (barListing) {
                     barListing.nanobar.go(bar.percent)
@@ -38,7 +38,6 @@ function updateParty(statsObject) {
             }
         } else {
             // If party member doesn't exist, create their listing
-            console.log(partyMember)
             addPartyMember(partyMember)
         }
     }
@@ -57,7 +56,7 @@ function addPartyMember(partyMemberObject) {
     element.classList.remove("toBeCloned")
 
     // Add party member's name to listing ID and replace spaces with underscores
-    element.setAttribute("id", partyMemberObject.name.replace(" ", "_"));
+    element.setAttribute("id", partyMemberObject.name.replaceAll(" ", "_"));
     $(".party").appendChild(element)
 
     for (const [key, value] of Object.entries(partyMemberObject.bars)) {
@@ -70,7 +69,7 @@ function addProgressBar(parent, label, value, color) {
     element.classList.remove("toBeCloned")
 
     // Add bar label to listing ID and replace spaces with underscores
-    element.setAttribute("id", label.replace(" ", "_"));
+    element.setAttribute("id", label.replaceAll(" ", "_"));
     parent.appendChild(element)
 
     element.nanobar = new Nanobar({ target: element, label: label })
@@ -82,9 +81,9 @@ function updateInventory(statsObject) {
     var inventoryItemNames = []
 
     for (const [key, item] of Object.entries(statsObject.inventory)) {
-        inventoryItemNames.push(item.name.replace(" ", "_"))
+        inventoryItemNames.push(item.name.replaceAll(" ", "_"))
 
-        var inventoryItemListing = $(".inventory").querySelector(`#${item.name}`.replace(" ", "_"))
+        var inventoryItemListing = $(".inventory").querySelector(`#${item.name}`.replaceAll(" ", "_"))
 
         if (inventoryItemListing) {
             inventoryItemListing.querySelector(".itemEmoji").innerHTML = item.emoji
@@ -93,7 +92,6 @@ function updateInventory(statsObject) {
         }
     }
 
-    console.log(inventoryItemNames)
     for (const item of $(".inventory").querySelectorAll(".inventoryItem:not(.toBeCloned)")) {
 
         if (!inventoryItemNames.includes(item.id)) item.remove()
@@ -106,7 +104,7 @@ function addInventoryItem(itemObject) {
     element.innerHTML = `<span class="itemEmoji">${itemObject.emoji}</span><br><span class="itemName">${itemObject.name}</span>`
     element.classList.remove("toBeCloned")
 
-    element.setAttribute("id", itemObject.name.replace(" ", "_"));
+    element.setAttribute("id", itemObject.name.replaceAll(" ", "_"));
     element.setAttribute("onClick", `sendAction(\`Use ${itemObject.name} from inventory\`)`);
 
     $(".inventory").appendChild(element)
@@ -150,6 +148,40 @@ function credits() {
     special thanks to all the workers in AI Horde :)`)
 }
 
-function updateStatusWaitTime(response) {
-    console.log(response)
+function updateAIStatus(response) {
+    var statusText = ""
+    var statusState = ""
+
+    // Starting to generate
+    if (response == "start") {
+        statusText = `initiating generation...`
+        statusState = "info"
+    } else if (response.status == 401) { // Unauthorized
+        statusText = `uh oh! ai horde wouldn't let us connect. are you sure you have your api key set up (correctly)?`
+        statusState = "error"
+    } else if (response.waiting == 1) { // Waiting in queue
+        statusText = `waiting in queue... you are at ${response.queue_position}...`
+        statusState = "waiting"
+    } else if (response.processing == 1) { // Processing
+        statusText = `processing!! wait time is at ${response.wait_time}...`
+        statusState = "waiting"
+    } else if (response.finished == 1) { // Processing
+        statusText = `done!!!`
+        statusState = "done"
+    } else if (response == "yaml") { // Not in YAML format
+        statusText = `aww... the output isn't anything we can process at all... regenerating...`
+        statusState = "regen"
+    } else if (response == "format") { // Not in game format
+        statusText = `aww... the output wasn't done right... regenerating...`
+        statusState = "regen"
+    } else { 
+        statusText = `uh oh! an unknown error/response has occured... response has been sent to console!`
+        statusState = "error"
+        console.log("--- unknown response ---")
+        console.log(response)
+    }
+
+    if (statusState == "info") $(".status").innerHTML = statusText
+    if (statusState == "error") $(".status").innerHTML = `<i><b>${statusText}</b></i>`
+    if (statusState == "waiting") $(".status").innerHTML = `<i><b>${statusText}</b></i>`
 }

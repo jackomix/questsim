@@ -57,7 +57,7 @@ button:active {
     width: 100%;
     float: left;
     font-size: 16pt;
-    text-shadow: var(--bg) 1px 0px 0px, var(--bg) 0.540302px 0.841471px 0px, var(--bg) -0.416147px 0.909297px 0px, var(--bg) -0.989992px 0.14112px 0px, var(--bg) -0.653644px -0.756802px 0px, var(--bg) 0.283662px -0.958924px 0px, var(--bg) 0.96017px -0.279415px 0px;
+    text-shadow: var(--bg) 3px 0px 0px, var(--bg) 2.83487px 0.981584px 0px, var(--bg) 2.35766px 1.85511px 0px, var(--bg) 1.62091px 2.52441px 0px, var(--bg) 0.705713px 2.91581px 0px, var(--bg) -0.287171px 2.98622px 0px, var(--bg) -1.24844px 2.72789px 0px, var(--bg) -2.07227px 2.16926px 0px, var(--bg) -2.66798px 1.37182px 0px, var(--bg) -2.96998px 0.42336px 0px, var(--bg) -2.94502px -0.571704px 0px, var(--bg) -2.59586px -1.50383px 0px, var(--bg) -1.96093px -2.27041px 0px, var(--bg) -1.11013px -2.78704px 0px, var(--bg) -0.137119px -2.99686px 0px, var(--bg) 0.850987px -2.87677px 0px, var(--bg) 1.74541px -2.43999px 0px, var(--bg) 2.44769px -1.73459px 0px, var(--bg) 2.88051px -0.838247px 0px;
     text-transform: lowercase;
 }
 .partyMember > .statBar:not(:last-child) > .nanobar {
@@ -144,9 +144,13 @@ button:active {
     margin: auto;
     padding: 1rem;
     font-size: 12pt;
+    display: flex;
+}
+.status {
+    flex-grow: 1;
 }
 .footerButtons {
-    float: right;
+    flex-shrink: 0;
 }
 .footerButton {
     font-size: small;

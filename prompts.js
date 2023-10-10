@@ -20,7 +20,7 @@ Return the YAML object.`
 
 function actionPrompt(stats) {
     return `Goal: Continue the story with what's happening next. 
-- Write what happens next in "new_story_beat".
+- Write what happens next in "new_story_beat". Go further and be extraordinary creative!
 - Write new choices the player must choose in "choices". 
 - Write and update "recap" and "last_story_beat". 
 ${rulesPrompt()}

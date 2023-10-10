@@ -1,59 +1,64 @@
 stats = {
     partyMembers: [
         {
-            name: "bob",
-            emotion: "😀",
+            name: "Bob the Wizard",
+            emotion: "😲",
             bars: [{
-                name: "health",
+                name: "Health",
                 percent: 100,
                 color: "#ff0000",
             },
             {
-                name: "mana",
+                name: "Mana",
                 percent: 50,
                 color: "#0000ff",
             },
             {
-                name: "energy",
-                percent: 25,
-                color: "#00ff00",
+                name: "Gold",
+                percent: 69,
+                color: "#ffff00",
             },
             ],
         },
         {
-            name: "alice",
-            emotion: "😞",
+            name: "Doggy",
+            emotion: "😋",
             bars: [
                 {
-                    name: "money",
+                    name: "Health",
+                    percent: 100,
+                    color: "#ff0000",
+                },
+                {
+                    name: "Bark Power",
                     percent: 75,
-                    color: "#ffff00",
+                    color: "#00ffff",
                 },
             ],
         },
     ],
     inventory: [
         {
-            name: "yummy biscuit",
-            emoji: "🍪",
+            name: "Wet Stick",
+            emoji: "🦴",
         },
         {
-            name: "car",
-            emoji: "🚗",
+            name: "Glasses",
+            emoji: "👓",
         },
         {
-            name: "apple",
+            name: "Apple",
             emoji: "🍎",
         },
     ],
-    story_recap: "You are Bob. You were in a house. You then left the house and found some items. Then you met Alice. A bear started running towards the both of you.",
+    story_recap: "After walking out of your wizard tower, you saw a dog. You gave it a bone you had in your inventory. You and the dog went into the forest. You saw a bear and hid in the bushes. Your dog made a sound and alerted the bear. The bear is now running towards you.",
     last_story_beat: "",
     actionChosen: "",
-    new_story_beat: "You see a bear running towards you!",
-    choices: ["Run away!", "Stay and fight."],
+    new_story_beat: "You see the bear galloping its furry and muscular legs towards you! Doggy doesn't notice, licking its bite-marks-covered stick on the ground.",
+    choices: ["Send a fireball spell", "Alert doggy"],
 }
 
-async function sendAction(action, error) {
+async function sendAction(action) {
     const backupStats = structuredClone(stats)
 
     stats.last_story_beat = stats.new_story_beat
@@ -62,65 +67,14 @@ async function sendAction(action, error) {
     stats.actionChosen = action
 
     try {
-        stats = await smartGen(actionPrompt(stats))
+        stats = await smartGen(actionPrompt(stats), true)
         updateStats(stats)
     } catch (error) {
-        console.info("error: out was YAML compatible but didn't fit game format. regenerating...")
+        updateAIStatus("format")
+        console.info("error: out was YAML compatible but didn't fit game format. (or debug_mode is on?) regenerating...")
         stats = structuredClone(backupStats)
         if (!log_mode) sendAction(action)
     }
 }
 
-function test() {
-    stats = {
-        partyMembers: [
-            {
-                name: "bob",
-                emotion: "😟",
-                bars: [
-                    {
-                        name: "health",
-                        percent: 25,
-                        color: "#ff0000",
-                    },
-                    {
-                        name: "mana",
-                        percent: 75,
-                        color: "#0000ff",
-                    },
-                    {
-                        name: "super energy",
-                        percent: 100,
-                        color: "#00ffff",
-                    },
-                ],
-            },
-            {
-                name: "doggy",
-                emotion: "🦴",
-                bars: [
-                    {
-                        name: "ruff power",
-                        percent: 100,
-                        color: "#ffffff",
-                    },
-                ],
-            },
-        ],
-        inventory: [
-            {
-                name: "car",
-                emoji: "🚗",
-            },
-            {
-                name: "bitten apple",
-                emoji: "🍎",
-            },
-        ],
-        story_recap: "You are bob. You were in a house. You then left the house and found some items. Then you met Alice. A bear was running towards you both. It killed Alice before a doggy came to save you. The bear dropped some items.",
-        current_story_beat: "The doggy asks for a treat!",
-        choices: ["Give it a treat", "Say no", "Dance around"],
-    };
-    updateStats(stats);
-}
 updateStats(stats)

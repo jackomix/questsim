@@ -41,12 +41,20 @@ async function genHorde(prompt) {
                     rep_pen_slope: 0.7,
                     sampler_order: [6, 0, 1, 3, 4, 2, 5],
                 },
-                models: ["aphrodite\/Undi95\/Emerhyst-20B", "aphrodite\/Undi95\/MXLewd-L2-20B", "aphrodite\/Undi95\/PsyMedRP-v1-20B", "koboldcpp\/Emerhyst-20B.q6_k", ],
+                models: [],//["aphrodite\/Undi95\/Emerhyst-20B", "aphrodite\/Undi95\/MXLewd-L2-20B", "aphrodite\/Undi95\/PsyMedRP-v1-20B", "koboldcpp\/Emerhyst-20B.q6_k", ],
             }),
         }
-    )
+    ).catch((error) => {
+        updateAIStatus(error)
+    })
+
+    if (response.status == 401) {
+        updateAIStatus(response)
+        return null
+    }
 
     const { id } = await response.json()
+
     let done = false
 
     while (!done) {
@@ -58,8 +66,7 @@ async function genHorde(prompt) {
             }
         )
         const checkData = await checkResponse.json();
-
-        updateStatusWaitTime(checkData)
+        updateAIStatus(checkData)
 
         if (checkData.finished) done = true
     }
@@ -72,6 +79,7 @@ async function genHorde(prompt) {
     )
     const statusData = await statusResponse.json()
     const finalText = statusData.generations[0].text
+    updateAIStatus(statusResponse)
 
     return finalText
 }
@@ -81,13 +89,17 @@ async function gen(prompt) {
     // Feel free to add other generation APIs lol
 }
 
-async function smartGen(prompt) {
+async function smartGen(prompt, regen) {
     if (log_mode) {
         console.log("--- prompt input ---")
         console.log(promptWrapper(prompt))
     }
 
+    if (!regen) updateAIStatus("start")
+
     result = await gen(promptWrapper(prompt))
+    if (result == null) return null
+
     result = "partyMembers:" + result
 
     if (result.includes("--- YAML Output End ---")) result = result.split("--- YAML Output End ---")[0]
@@ -101,6 +113,7 @@ async function smartGen(prompt) {
         const yamlObject = jsyaml.load(result)
         return yamlObject
     } catch (error) {
+        updateAIStatus("yaml")
         console.info("error: generated output was not (at least perfectly) in YAML format. regenerating...")
         if (!log_mode) return smartGen(prompt)
     }
