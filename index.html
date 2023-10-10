@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>questsim</title>
+        <meta name="description" content="go on quests">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="mainContainer">
+            <h1 class="logo">questsim</h1>
+            <hr>
+            <!--<h1 onclick="test()">test</h1>-->
+            <div class="gameContainer">
+                <div class="leftSide">
+                    <div class="party">
+                        <div class="partyMember toBeCloned">
+                            <h3 class="partyMemberName">cool guy</h3>
+                        </div>
+                    </div>
+                    <div class="toBeCloned statBar"></div>
+                    <div class="inventory">
+                        <button class="inventoryItem toBeCloned">🍪 biscuit</button>
+                    </div>
+                </div>
+
+                <div class="rightSide">
+                    <div class="mainText"></div>
+                    <button class="choice toBeCloned">start game</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="status">waiting 5 in queue</div>
+            <div class="footerButtons">
+                <button class="footerButton" onclick="setAPIKey()">set AI key</button>
+                <button class="footerButton" onclick="credits()">credits</button>
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/js-yaml"></script>
+        <script src="https://mgrsskls.github.io/typing-effect/typing-effect.js"></script>
+        <script src="nanobar.edit.js"></script>
+
+        <script src="tools.js"></script>
+        <script src="prompts.js"></script>
+        <script src="ai.js"></script>
+        <script src="ui.js"></script>
+        <script src="game.js"></script>
+    </body>
+</html>

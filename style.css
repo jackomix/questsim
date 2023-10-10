@@ -1,0 +1,153 @@
+:root {
+    --bg: #8d8980;
+    --color: #0e0e1d;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 20pt;
+    margin: 1.5rem;
+    background: var(--bg);
+    color: var(--color);
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0;
+}
+h1, h2, h3, h4, h5, p { margin: 0; }
+
+hr {
+    border: 0;
+    border-top: 2pt solid var(--color);
+}
+
+.logo {
+    text-align: center;
+    font-style: italic;
+}
+
+input, button {
+    margin: auto;
+    padding: 0.5rem;
+    font-size: 16pt;
+    background: none;
+    color: var(--color);
+    border: 0.5rem solid var(--color);
+}
+button { border: 0.15rem solid var(--color); }
+button:hover {
+    background: color-mix(in srgb, currentColor 15%, transparent);
+}
+button:active {
+    background: color-mix(in srgb, currentColor 50%, transparent);
+}
+
+.nanobar {
+    height: 1.75rem;
+    text-align: center;
+    box-sizing: border-box;
+    border: 0.15rem solid var(--color);
+}
+.bar {
+    border-right: 0.15rem solid var(--color);
+    background: #ff0000;
+}
+.nanobarLabel {
+    width: 100%;
+    float: left;
+    font-size: 16pt;
+    text-shadow: var(--bg) 1px 0px 0px, var(--bg) 0.540302px 0.841471px 0px, var(--bg) -0.416147px 0.909297px 0px, var(--bg) -0.989992px 0.14112px 0px, var(--bg) -0.653644px -0.756802px 0px, var(--bg) 0.283662px -0.958924px 0px, var(--bg) 0.96017px -0.279415px 0px;
+    text-transform: lowercase;
+}
+.partyMember > .statBar:not(:last-child) > .nanobar {
+    border-bottom: 0;
+}
+
+.mainContainer {
+    width: 50rem;
+    margin: auto;
+    padding: 1rem;
+    border: 0.15rem solid var(--color);
+}
+
+.gameContainer {
+    display: flex;
+    flex-direction: row;
+}
+.leftSide {
+    width: 35%;
+    margin-right: 0.5rem;
+    border: 0.15rem solid var(--color);
+}
+.rightSide {
+    width: 65%;
+    min-height: 10rem;
+    margin-left: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.partyMember {
+    padding: 0.5rem;
+    border-bottom: 0.15rem solid var(--color);
+}
+.partyMemberName {
+    text-transform: lowercase;
+}
+.characterEmoji {
+    float: right;
+    font-size: 16pt;
+}
+
+
+.inventory {
+    padding: 0.5rem;
+    font-size: 16pt;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.inventoryItem {
+    text-align: left;
+    font-size: 14pt;
+    width: 50%;
+    border: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 2pt;
+    text-transform: lowercase;
+}
+
+.mainText {
+    border: 2pt solid var(--color);
+    flex-grow: 1;
+    font-size: 15pt;
+    padding: 0.5rem;
+}
+.choice {
+    width: 100%;
+    padding: 1rem;
+    font-size: large;
+    text-transform: lowercase;
+}
+
+.toBeCloned {
+    display: none;
+}
+
+.footer {
+    width: 50rem;
+    margin: auto;
+    padding: 1rem;
+    font-size: 12pt;
+}
+.footerButtons {
+    float: right;
+}
+.footerButton {
+    font-size: small;
+}
