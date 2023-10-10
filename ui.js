@@ -128,10 +128,10 @@ function updateStats(stats) {
     // Remove any previous choice buttons
     for (const choice of document.querySelectorAll('.choice:not(.toBeCloned)')) { choice.remove() }
     // Iterate through current choices and add them
-    for (const choice of stats.choices) { addChoice(choice, choice) }
+    for (const choice of stats.newChoices) { addChoice(choice, choice) }
 
     // Display current text
-    $(".mainText").innerHTML = stats.new_story_beat
+    $(".mainText").innerHTML = stats.newStoryBeat
     typingEffect($(".mainText"), {
         speed: 15,
     })
@@ -163,17 +163,19 @@ function updateAIStatus(response) {
         statusText = `waiting in queue... you are at ${response.queue_position}...`
         statusState = "waiting"
     } else if (response.processing == 1) { // Processing
-        statusText = `processing!! wait time is at ${response.wait_time}...`
+        statusText = `processing!! wait time is at ~~${response.wait_time} seconds...`
         statusState = "waiting"
     } else if (response.finished == 1) { // Processing
         statusText = `done!!!`
         statusState = "done"
     } else if (response == "yaml") { // Not in YAML format
-        statusText = `aww... the output isn't anything we can process at all... regenerating...`
-        statusState = "regen"
+        statusText = `aww... the output isn't even in a readable format... regenerating...`
+        statusState = "error"
     } else if (response == "format") { // Not in game format
-        statusText = `aww... the output wasn't done right... regenerating...`
-        statusState = "regen"
+        statusText = `aww... the output doesn't go with our game's format... regenerating...`
+        statusState = "error"
+    } else if (response.status == 200) { // Good but likely redundant response (like after generation), we can just ignore it
+        return
     } else { 
         statusText = `uh oh! an unknown error/response has occured... response has been sent to console!`
         statusState = "error"
@@ -181,7 +183,10 @@ function updateAIStatus(response) {
         console.log(response)
     }
 
-    if (statusState == "info") $(".status").innerHTML = statusText
+    $(".status").innerHTML = statusText // "info" doesn't do anything
     if (statusState == "error") $(".status").innerHTML = `<i><b>${statusText}</b></i>`
-    if (statusState == "waiting") $(".status").innerHTML = `<i><b>${statusText}</b></i>`
+
+    $(".status").className = "status" // Remove any animation classes before potentially adding new ones
+    if (statusState == "waiting") $(".status").classList.add("floating")
+    if (statusState == "done") $(".status").classList.add("skew")
 }

@@ -95,7 +95,7 @@ async function smartGen(prompt, regen) {
         console.log(promptWrapper(prompt))
     }
 
-    if (!regen) updateAIStatus("start")
+    if (regen !== undefined) updateAIStatus("start")
 
     result = await gen(promptWrapper(prompt))
     if (result == null) return null

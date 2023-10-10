@@ -11,7 +11,7 @@ partyMembers:`
 }
 
 function rulesPrompt() {
-    return `- Provide multiple choices as strings of text in "choices". 
+    return `- Add multiple strings into the "newChoices" array. 
 - Modify "inventory", "partyMembers", party member's "bars" and "emotion"s as necessary. 
 - Keep the inventory current and remove unusable items. 
 
@@ -19,10 +19,10 @@ Return the YAML object.`
 }
 
 function actionPrompt(stats) {
-    return `Goal: Continue the story with what's happening next. 
-- Write what happens next in "new_story_beat". Go further and be extraordinary creative!
-- Write new choices the player must choose in "choices". 
-- Write and update "recap" and "last_story_beat". 
+    return `Goal: Continue the story with what's happening next after the player's "lastChoice" 
+- Write what happens next in "newStoryBeat". Go further and be extraordinary creative!
+- Write multiple new choices the player must choose in "newChoices". 
+- Write and update "storyRecap" and "lastStoryBeat". 
 ${rulesPrompt()}
 
 ${jsyaml.dump(stats)}`

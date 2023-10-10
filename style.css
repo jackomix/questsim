@@ -57,7 +57,7 @@ button:active {
     width: 100%;
     float: left;
     font-size: 16pt;
-    text-shadow: var(--bg) 3px 0px 0px, var(--bg) 2.83487px 0.981584px 0px, var(--bg) 2.35766px 1.85511px 0px, var(--bg) 1.62091px 2.52441px 0px, var(--bg) 0.705713px 2.91581px 0px, var(--bg) -0.287171px 2.98622px 0px, var(--bg) -1.24844px 2.72789px 0px, var(--bg) -2.07227px 2.16926px 0px, var(--bg) -2.66798px 1.37182px 0px, var(--bg) -2.96998px 0.42336px 0px, var(--bg) -2.94502px -0.571704px 0px, var(--bg) -2.59586px -1.50383px 0px, var(--bg) -1.96093px -2.27041px 0px, var(--bg) -1.11013px -2.78704px 0px, var(--bg) -0.137119px -2.99686px 0px, var(--bg) 0.850987px -2.87677px 0px, var(--bg) 1.74541px -2.43999px 0px, var(--bg) 2.44769px -1.73459px 0px, var(--bg) 2.88051px -0.838247px 0px;
+    text-shadow: 0 0 0.3em #ffffff;
     text-transform: lowercase;
 }
 .partyMember > .statBar:not(:last-child) > .nanobar {
@@ -154,4 +154,34 @@ button:active {
 }
 .footerButton {
     font-size: small;
+}
+
+@keyframes float {
+	0% {
+        transform: translatey(0em);
+    }
+    25% {
+        transform: translatey(-0.15em);
+    }
+    50% {
+        transform: translatey(0em);
+    }
+    75% {
+        transform: translatey(0.15em);
+    }
+}
+.floating {
+    animation: float 2s ease-in-out infinite;
+}
+/* https://unused-css.com/blog/css-shake-animation/ */
+@keyframes skew-x-shakeng{
+    0% { transform: skewX(-15deg); }
+    5% { transform: skewX(15deg); }
+    10% { transform: skewX(-15deg); }
+    15% { transform: skewX(15deg); }
+    20% { transform: skewX(0deg); }
+    100% { transform: skewX(0deg); }
+   }
+.skew {
+    animation: skew 1s ease-out;
 }

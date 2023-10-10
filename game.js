@@ -51,20 +51,20 @@ stats = {
             emoji: "🍎",
         },
     ],
-    story_recap: "After walking out of your wizard tower, you saw a dog. You gave it a bone you had in your inventory. You and the dog went into the forest. You saw a bear and hid in the bushes. Your dog made a sound and alerted the bear. The bear is now running towards you.",
-    last_story_beat: "",
-    actionChosen: "",
-    new_story_beat: "You see the bear galloping its furry and muscular legs towards you! Doggy doesn't notice, licking its bite-marks-covered stick on the ground.",
-    choices: ["Send a fireball spell", "Alert doggy"],
+    storyRecap: "After walking out of your wizard tower, you saw a dog. You gave it a bone you had in your inventory. You and the dog went into the forest. You saw a bear and hid in the bushes. Your dog made a sound and alerted the bear. The bear is now running towards you.",
+    lastStoryBeat: "",
+    lastChoice: "",
+    newStoryBeat: "You see the bear galloping its furry and muscular legs towards you! Doggy doesn't notice, licking its bite-marks-covered stick on the ground.",
+    newChoices: ["Send a fireball spell", "Alert doggy"],
 }
 
 async function sendAction(action) {
     const backupStats = structuredClone(stats)
 
-    stats.last_story_beat = stats.new_story_beat
-    stats.new_story_beat = "[Assistant replace with new story beat]"
-    stats.choices = ["[Assistant replace with multiple strings of choices]"]
-    stats.actionChosen = action
+    stats.lastStoryBeat = stats.newStoryBeat
+    stats.newStoryBeat = "[Assistant replace with new story beat]"
+    stats.newChoices = ["[Assistant replace with multiple strings of choices]"]
+    stats.lastChoice = action
 
     try {
         stats = await smartGen(actionPrompt(stats), true)
