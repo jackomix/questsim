@@ -26,10 +26,12 @@ function actionPrompt(stats) {
 ${rulesPrompt()}
 
 ${jsyaml.dump(stats)}`*/
-    return `Goal: Continue the story based on the player's "lastChoice."
+    return `Choose-Your-Own-Adventure Game:
+
+- Continue the game and story based on the player's "lastChoice."
 - Write and describe what happens next in "nextPartOfStory." Be creative and entertaining!
-- Create new unique and interesting choices for the player in the "playerChoices" array, 1-2 sentences each.
-- Adjust "inventory," "partyMembers," and their attributes as needed.
+- Give the player choices of what to do from there in "playerChoices". Write 1-2 sentences each.
+- Edit/add/remove things in "inventory," "partyMembers," and their attributes if mentioned.
 
 ${jsyaml.dump(stats)}`
 }

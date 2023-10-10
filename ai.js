@@ -27,9 +27,9 @@ async function genHorde(prompt) {
                     max_context_length: 2048,
                     max_length: 512,
                     singleline: false,
-                    temperature: 0.6,
-                    top_p: 0.92,
-                    top_k: 0,
+                    temperature: 0.7,
+                    top_p: 0.2,
+                    top_k: 85,
                     /*temperature: 1.2,
                     top_p: 0.92,
                     top_k: 0,*/

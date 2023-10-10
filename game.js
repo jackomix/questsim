@@ -64,12 +64,29 @@ async function sendAction(action) {
     const backupStats = structuredClone(stats)
 
     stats.previousStoryPart = stats.nextPartOfStory
-    stats.nextPartOfStory = "(Assistant, replace this with what happens next in the story.)"
-    stats.playerChoices = ["(Assistant, replace this with multiple choices for the player.)"]
+    defaultNextPartOfStory = "(Assistant, replace this with what happens next in the story.)"
+    defaultPlayerChoices = ["(Assistant, replace this with multiple choices for the player.)"]
+    stats.nextPartOfStory = defaultNextPartOfStory
+    stats.playerChoices = defaultPlayerChoices
     stats.lastChoice = action
 
     try {
         stats = await smartGen(actionPrompt(stats), true)
+
+        // If output doesn't actually replace or put anything in nextPartOfStory or playerChoices, then just regenerate
+        if (stats.nextPartOfStory == defaultNextPartOfStory || 
+            stats.nextPartOfStory.length == 0 ||
+            stats.playerChoices == defaultPlayerChoices ||
+            stats.playerChoices.length == 0) {
+                // Restore backup stats object
+                stats = structuredClone(backupStats)
+                updateStats(stats)
+
+                if (!debug_mode) sendAction(action)
+
+                return
+        }
+
         updateStats(stats)
     } catch (error) {
         // Only notify if the error is a parsing error and not a smartGen error
