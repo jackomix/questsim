@@ -27,7 +27,7 @@ async function genHorde(prompt) {
                     max_context_length: 2048,
                     max_length: 512,
                     singleline: false,
-                    temperature: 0.9,
+                    temperature: 0.6,
                     top_p: 0.92,
                     top_k: 0,
                     /*temperature: 1.2,
@@ -41,7 +41,7 @@ async function genHorde(prompt) {
                     rep_pen_slope: 0.7,
                     sampler_order: [6, 0, 1, 3, 4, 2, 5],
                 },
-                models: [],//["aphrodite\/Undi95\/Emerhyst-20B", "aphrodite\/Undi95\/MXLewd-L2-20B", "aphrodite\/Undi95\/PsyMedRP-v1-20B", "koboldcpp\/Emerhyst-20B.q6_k", ],
+                models: ["koboldcpp\/MythoMax-L2-13b"],//["aphrodite\/Undi95\/Emerhyst-20B", "aphrodite\/Undi95\/MXLewd-L2-20B", "aphrodite\/Undi95\/PsyMedRP-v1-20B", "koboldcpp\/Emerhyst-20B.q6_k", ],
             }),
         }
     ).catch((error) => {
