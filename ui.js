@@ -128,10 +128,10 @@ function updateStats(stats) {
     // Remove any previous choice buttons
     for (const choice of document.querySelectorAll('.choice:not(.toBeCloned)')) { choice.remove() }
     // Iterate through current choices and add them
-    for (const choice of stats.newChoices) { addChoice(choice, choice) }
+    for (const choice of stats.playerChoices) { addChoice(choice, choice) }
 
     // Display current text
-    $(".mainText").innerHTML = stats.newStoryBeat
+    $(".mainText").innerHTML = stats.nextPartOfStory
     typingEffect($(".mainText"), {
         speed: 15,
     })

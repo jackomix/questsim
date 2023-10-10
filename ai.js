@@ -1,5 +1,5 @@
 hordeAPIKey = ""
-debug_mode = true // Prevents automatically trying generation again on error
+debug_mode = false // Prevents automatically trying generation again on error
 log_mode = true // Logs prompt and raw AI output to console
 
 function setAPIKey() {
@@ -27,9 +27,9 @@ async function genHorde(prompt) {
                     max_context_length: 2048,
                     max_length: 512,
                     singleline: false,
-                    temperature: 0.8,
+                    temperature: 0.9,
                     top_p: 0.92,
-                    top_k: 100,
+                    top_k: 0,
                     /*temperature: 1.2,
                     top_p: 0.92,
                     top_k: 0,*/
@@ -115,6 +115,6 @@ async function smartGen(prompt, regen) {
     } catch (error) {
         updateAIStatus("yaml")
         console.info("error: generated output was not (at least perfectly) in YAML format. regenerating...")
-        if (!log_mode) return smartGen(prompt)
+        if (!debug_mode) return smartGen(prompt)
     }
 }
