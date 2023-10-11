@@ -74,10 +74,11 @@ async function sendAction(action) {
         stats = await smartGen(actionPrompt(stats), true)
 
         // If output doesn't actually replace or put anything in nextPartOfStory or playerChoices, then just regenerate
-        if (stats.nextPartOfStory == defaultNextPartOfStory || 
+        if (!stats.partyMembers &&
+            (stats.nextPartOfStory == defaultNextPartOfStory || 
             stats.nextPartOfStory.length == 0 ||
             stats.playerChoices == defaultPlayerChoices ||
-            stats.playerChoices.length == 0) {
+            stats.playerChoices.length == 0)) {
                 // Restore backup stats object
                 stats = structuredClone(backupStats)
                 updateStats(stats)

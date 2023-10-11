@@ -1,5 +1,5 @@
 hordeAPIKey = ""
-debug_mode = false // Prevents automatically trying generation again on error
+debug_mode = true // Prevents automatically trying generation again on error
 log_mode = true // Logs prompt and raw AI output to console
 
 function setAPIKey() {
