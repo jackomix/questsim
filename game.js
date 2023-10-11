@@ -70,26 +70,30 @@ async function sendAction(action) {
     stats.playerChoices = defaultPlayerChoices
     stats.lastChoice = action
 
+    // To make sure we don't overwrite stats with any errors (which is rooted in genHorde() returning null which should be rewritten) we make a test variable.
+    statsAttempt = await smartGen(actionPrompt(stats), true)
+    console.log(statsAttempt)
+    if (statsAttempt !== null) stats = structuredClone(statsAttempt)
+
+    // If output doesn't actually replace or put anything in nextPartOfStory or playerChoices, then just regenerate
+    if (stats.hasOwnProperty("partyMembers") &&
+    (stats.nextPartOfStory == defaultNextPartOfStory || 
+    stats.nextPartOfStory.length == 0 ||
+    stats.playerChoices == defaultPlayerChoices ||
+    stats.playerChoices.length == 0)) {
+        // Restore backup stats object
+        stats = structuredClone(backupStats)
+        updateStats(stats)
+
+        if (!debug_mode) sendAction(action)
+
+        return
+    }
+    
     try {
-        stats = await smartGen(actionPrompt(stats), true)
-
-        // If output doesn't actually replace or put anything in nextPartOfStory or playerChoices, then just regenerate
-        if (!stats.partyMembers &&
-            (stats.nextPartOfStory == defaultNextPartOfStory || 
-            stats.nextPartOfStory.length == 0 ||
-            stats.playerChoices == defaultPlayerChoices ||
-            stats.playerChoices.length == 0)) {
-                // Restore backup stats object
-                stats = structuredClone(backupStats)
-                updateStats(stats)
-
-                if (!debug_mode) sendAction(action)
-
-                return
-        }
-
         updateStats(stats)
     } catch (error) {
+        console.log("no")
         // Only notify if the error is a parsing error and not a smartGen error
         if (stats) {
             updateAIStatus("format")
