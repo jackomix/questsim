@@ -2,8 +2,32 @@ hordeAPIKey = ""
 debug_mode = false // Prevents automatically trying generation again on error
 log_mode = true // Logs prompt and raw AI output to console
 
+function localStorageCheck() {
+    if (localStorage.getItem("hordeAPIKey")) {
+        hordeAPIKey = localStorage.getItem("hordeAPIKey")
+        
+        $(".status").innerHTML = "welcome to questsim!"
+        $(".setAPIKey").innerHTML = "reset AI Horde key"
+    } else {
+        $(".status").innerHTML = "welcome to questsim! <i><b>remember to set your AI Horde key!!</b></i>"
+        $(".localStorageAPIKey").style.display = "none"
+    }
+}
+localStorageCheck()
+
 function setAPIKey() {
     hordeAPIKey = prompt("paste AI Horde key. you can get a free one at https://stablehorde.net if you don't have one")
+    
+    $(".localStorageAPIKey").style.display = ""
+    $(".setAPIKey").innerHTML = "reset AI Horde key"
+}
+
+function localStorageAPIKey() {
+    localStorage.setItem("hordeAPIKey", hordeAPIKey)
+    
+    const oldText = $(".localStorageAPIKey").innerHTML
+    $(".localStorageAPIKey").innerHTML = "saved!"
+    setTimeout(() => { $(".localStorageAPIKey").innerHTML = oldText }, 1000)
 }
 
 function sleep(ms) {
