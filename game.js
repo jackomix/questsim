@@ -79,11 +79,11 @@ async function sendAction(action) {
         stats = structuredClone(statsAttempt)
     }
 
-    // If output doesn't actually replace or put anything in nextPartOfStory or playerChoices, then just regenerate
+    // If output's nextPartOfStory or playerChoices is untouched, or if the length of them is 0, regenerate.
     if ((stats.nextPartOfStory == defaultNextPartOfStory || 
-    stats.nextPartOfStory.length == 0 ||
+    !stats.nextPartOfStory.replace(/\s/g,'').length > 0 ||
     stats.playerChoices == defaultPlayerChoices ||
-    stats.playerChoices.length == 0)) {
+    !stats.playerChoices[0].replace(/\s/g,'').length > 0)) {
         // Restore backup stats object
         stats = structuredClone(backupStats)
         updateStats(stats)
