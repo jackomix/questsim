@@ -130,7 +130,6 @@ function updateStats(stats) {
     // Iterate through current choices and add them
     for (const choice of stats.playerChoices) { addChoice(choice, choice) }
 
-    // Display current text
     $(".mainText").innerHTML = stats.nextPartOfStory
     typingEffect($(".mainText"), {
         speed: 15,
@@ -170,10 +169,10 @@ function updateAIStatus(response) {
         statusState = "done"
     } else if (response == "yaml") { // Not in YAML format
         statusText = `aww... the output isn't even in a readable format... regenerating...`
-        statusState = "error"
+        statusState = "errorRegen"
     } else if (response == "format") { // Not in game format
         statusText = `aww... the output doesn't go with our game's format... regenerating...`
-        statusState = "error"
+        statusState = "errorRegen"
     } else if (response.status == 200) { // Good but likely redundant response (like after generation), we can just ignore it
         return
     } else { 
@@ -183,8 +182,15 @@ function updateAIStatus(response) {
         console.log(response)
     }
 
+    // If status is not "info", re-enable all buttons
+    // The code is here to reduce pasting this same code multiple times
+    if (statusState != "info" || statusState != "waiting" || statusState != "errorRegen") {
+        document.querySelectorAll('div.gameContainer button').forEach((button) => { button.disabled = false
+        })
+    }
+
     $(".status").innerHTML = statusText // "info" doesn't do anything
-    if (statusState == "error") $(".status").innerHTML = `<i><b>${statusText}</b></i>`
+    if (statusState == "error" || statusState == "errorRegen") $(".status").innerHTML = `<i><b>${statusText}</b></i>`
 
     $(".status").className = "status" // Remove any animation classes before potentially adding new ones
     if (statusState == "waiting") $(".status").classList.add("floating")

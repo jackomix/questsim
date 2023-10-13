@@ -139,6 +139,6 @@ async function smartGen(prompt, regen) {
     } catch (error) {
         updateAIStatus("yaml")
         console.info("error: generated output was not (at least perfectly) in YAML format. regenerating...")
-        if (!debug_mode) return smartGen(prompt)
+        if (!debug_mode) return smartGen(prompt, true)
     }
 }

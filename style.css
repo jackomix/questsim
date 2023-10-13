@@ -42,6 +42,9 @@ button:hover {
 button:active {
     background: color-mix(in srgb, currentColor 50%, transparent);
 }
+button:disabled {
+    background: color-mix(in srgb, currentColor 25%, transparent);
+}
 
 .nanobar {
     height: 1.75rem;
