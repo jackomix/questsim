@@ -59,7 +59,11 @@ stats = {
     lastChoice: "",
 }
 //backstory: "After walking out of your wizard tower, you saw a dog. You gave it a bone you had in your inventory. You and the dog went into the forest. You saw a bear and hid in the bushes. Your dog made a sound and alerted the bear. The bear is now running towards you.",
-async function sendAction(action) {
+async function sendAction(action, regen) {
+    // Disable all buttons
+    document.querySelectorAll('div.gameContainer button').forEach((button) => { button.disabled = true
+    })
+
     // Back up current stats object incase of error
     const backupStats = structuredClone(stats)
 
@@ -70,22 +74,26 @@ async function sendAction(action) {
     stats.playerChoices = defaultPlayerChoices
     stats.lastChoice = action
 
-    // To make sure we don't overwrite stats with any errors (which is rooted in genHorde() returning null which should be rewritten) we make a test variable.
+    // Since smartGen could result in an error, we define a different variable, and set stats to it afterwards if it's safe
     statsAttempt = await smartGen(actionPrompt(stats), true)
-    console.log(statsAttempt)
-    if (statsAttempt !== null) stats = structuredClone(statsAttempt)
 
-    // If output doesn't actually replace or put anything in nextPartOfStory or playerChoices, then just regenerate
-    if (stats.hasOwnProperty("partyMembers") &&
-    (stats.nextPartOfStory == defaultNextPartOfStory || 
-    stats.nextPartOfStory.length == 0 ||
+    if (statsAttempt == null) {
+        stats = structuredClone(backupStats)
+        return
+    } else {
+        stats = structuredClone(statsAttempt)
+    }
+
+    // If output's nextPartOfStory or playerChoices is untouched, or if the length of them is 0, regenerate.
+    if (stats.nextPartOfStory == defaultNextPartOfStory || 
+    !stats.nextPartOfStory.replace(/\s/g,"").length > 0 ||
     stats.playerChoices == defaultPlayerChoices ||
-    stats.playerChoices.length == 0)) {
+    !stats.playerChoices[0].replace(/\s/g,"").length > 0) {
         // Restore backup stats object
         stats = structuredClone(backupStats)
         updateStats(stats)
 
-        if (!debug_mode) sendAction(action)
+        if (!debug_mode) sendAction(action, true)
 
         return
     }
@@ -104,7 +112,7 @@ async function sendAction(action) {
         stats = structuredClone(backupStats)
         updateStats(stats)
 
-        if (!debug_mode) sendAction(action)
+        if (!debug_mode) sendAction(action, regen)
     }
 }
 

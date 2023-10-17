@@ -42,6 +42,9 @@ button:hover {
 button:active {
     background: color-mix(in srgb, currentColor 50%, transparent);
 }
+button:disabled {
+    background: color-mix(in srgb, currentColor 25%, transparent);
+}
 
 .nanobar {
     height: 1.75rem;
@@ -123,7 +126,7 @@ button:active {
 }
 
 .mainText {
-    border: 2pt solid var(--color);
+    border: 0.15rem solid var(--color);
     flex-grow: 1;
     font-size: 15pt;
     padding: 0.5rem;
